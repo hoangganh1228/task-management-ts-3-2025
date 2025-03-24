@@ -4,6 +4,8 @@ import * as database from "./config/database"
 import mainV1Routes from "./api/v1/routes/index.route";
 
 import bodyParser from "body-parser";
+import cors from "cors"
+
 dotenv.config();
 
 database.connect();
