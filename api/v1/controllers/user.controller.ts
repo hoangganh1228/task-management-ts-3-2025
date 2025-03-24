@@ -36,3 +36,36 @@ export const register = async (req: Request, res: Response) => {
 
 }
 
+// [POST] /api/v1/users/login
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const existEmail = await User.findOne({
+    email: email
+  });
+
+  if(!existEmail) {
+    res.status(400).json({
+      code: 400,
+      message: "Email không tồn tại!"
+    });
+    return;
+  }
+
+  if(md5(password) !== existEmail.password) {
+    res.status(400).json({
+      code: 400,
+      message: "Sai mật khẩu!"
+    });
+    return;
+  }
+
+  const token = existEmail.token;
+ 
+   // res.status(400).json();
+  res.json({
+    code: 200,
+    message: "Đăng nhập thành công!",
+    token: token
+  });
+}
+

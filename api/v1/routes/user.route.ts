@@ -9,5 +9,11 @@ router.post(
   validate.createPost, 
   controller.register
 );
+
+router.post(
+  "/login",
+  validate.login,
+  controller.login
+)
  
 export const userRoutes: Router = router;
