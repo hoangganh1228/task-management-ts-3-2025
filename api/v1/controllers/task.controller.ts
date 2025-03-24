@@ -1,12 +1,14 @@
 import {Response, Request} from "express"
 import { Task } from "../../../model/task.model";
 import { paginationHelper } from "../helpers/pagination";
+import { searchHeper } from "../helpers/search";
 
 export const index = async (req: Request, res: Response) => {
   // Find
   interface Find {
     deleted: boolean,
-    status?: string
+    status?: string,
+    title?: RegExp
   }
 
   const find: Find = {
@@ -35,6 +37,10 @@ export const index = async (req: Request, res: Response) => {
     countTasks
   )
 
+  const objectSearch = searchHeper(req.query);
+  if(objectSearch.regex) {
+    find.title = objectSearch.regex
+  }
   
 
   const tasks = await Task.find(find).sort(sort).limit(objectPagination.limitItems).skip(objectPagination.skip);  
