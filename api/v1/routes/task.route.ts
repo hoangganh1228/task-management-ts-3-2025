@@ -17,6 +17,12 @@ router.post(
   controller.createPost
 )
 
+router.patch(
+  "/edit/:id", 
+  validate.editPatch,
+  controller.editPatch
+);
+
 export const taskRoutes: Router = router;
 
 

@@ -10,3 +10,16 @@ export const createPost = (req: Request, res: Response, next: NextFunction): voi
   }
   next();
 };
+
+export const editPatch = (req: Request, res: Response, next: NextFunction): void => {
+  if (!req.body.title) {
+    res.status(400).json({
+      status: 400,
+      message: "Vui lòng nhập tiêu đề!"
+    });
+    return;
+  }
+  next();
+};
+
+

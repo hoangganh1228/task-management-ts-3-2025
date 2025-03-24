@@ -136,3 +136,23 @@ export const createPost = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const editPatch = async (req: Request, res: Response) => {
+  try {
+    const id: string = req.params.id;
+
+    await Task.updateOne({
+      _id: id
+    }, req.body)
+  
+    res.json({
+      code: 200,
+      message: "Cập nhật thành công!"
+    });
+  } catch (error) {
+    res.status(400).json({
+      code: 400,
+      message: "Lỗi!"
+    });
+  }
+}
