@@ -118,3 +118,21 @@ export const changeMulti = async (req: Request, res: Response) => {
     });
   }
 }
+
+export const createPost = async (req: Request, res: Response) => {
+  try {
+    const task = new Task(req.body);
+    const data = task.save();
+
+    res.json({
+      code: 200,
+      message: "Tạo thành công!",
+      data: data
+    });
+  } catch (error) {
+    res.status(400).json({
+      code: 400,
+      message: "Lỗi!"
+    })
+  }
+}
