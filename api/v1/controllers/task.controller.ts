@@ -59,3 +59,27 @@ export const detail = async (req: Request, res: Response) => {
 
   res.json(task)
 }
+
+export const changeStatus = async (req: Request, res: Response) => {
+  try {
+    type typeStatus = "initial" | "doing" | "finish" | "pending" | "notFinish";
+
+    const id:string = req.params.id;
+    const status:typeStatus = req.body.status;
+    
+    await Task.updateOne({
+      _id: id,
+      status: status 
+    })
+
+    res.json({
+      code: 200,
+      message: "Cập nhật trạng thái thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Không tồn tại!"
+    });
+  }
+}
