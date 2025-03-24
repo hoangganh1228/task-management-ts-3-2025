@@ -15,5 +15,7 @@ router.post(
   validate.login,
   controller.login
 )
+
+router.get("/detail/:id", controller.detail);
  
 export const userRoutes: Router = router;
