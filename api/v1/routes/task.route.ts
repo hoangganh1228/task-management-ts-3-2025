@@ -23,6 +23,8 @@ router.patch(
   controller.editPatch
 );
 
+router.delete("/delete/:id", controller.deleteTask);
+
 export const taskRoutes: Router = router;
 
 
