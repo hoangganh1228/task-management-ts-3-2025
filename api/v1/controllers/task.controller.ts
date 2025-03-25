@@ -6,14 +6,20 @@ import { searchHeper } from "../helpers/search";
 export const index = async (req: Request, res: Response) => {
   // Find
   interface Find {
-    deleted: boolean,
+    $or?: ({ listUsers: string[] } | { createdBy: string })[];
+    deleted: boolean;
     status?: string,
     title?: RegExp
   }
 
   // console.log(req["infoUser"].id);
 
+  console.time("Query Time");
   const find: Find = {
+    $or: [
+      { listUsers: req["infoUser"].id },
+      { createdBy: req["infoUser"].id }
+    ],
     deleted: false
   }
   // End Find
@@ -33,7 +39,7 @@ export const index = async (req: Request, res: Response) => {
   let objectPagination = paginationHelper(
     {
       currentPage: 1,
-      limitItems: 2,
+      limitItems: 4,
     }, 
     req.query,
     countTasks
@@ -46,7 +52,7 @@ export const index = async (req: Request, res: Response) => {
   
 
   const tasks = await Task.find(find).sort(sort).limit(objectPagination.limitItems).skip(objectPagination.skip);  
-
+  console.timeEnd("Query Time"); // Kết thúc đo thời gian
   // console.log(tasks);
 
   res.json(tasks);
