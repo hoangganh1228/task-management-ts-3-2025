@@ -11,6 +11,8 @@ export const index = async (req: Request, res: Response) => {
     title?: RegExp
   }
 
+  // console.log(req["infoUser"].id);
+
   const find: Find = {
     deleted: false
   }
@@ -45,7 +47,7 @@ export const index = async (req: Request, res: Response) => {
 
   const tasks = await Task.find(find).sort(sort).limit(objectPagination.limitItems).skip(objectPagination.skip);  
 
-  console.log(tasks);
+  // console.log(tasks);
 
   res.json(tasks);
 }
@@ -139,8 +141,9 @@ export const changeMulti = async (req: Request, res: Response) => {
 
 export const createPost = async (req: Request, res: Response) => {
   try {
+    req.body.createdBy = req["infoUser"].id;
     const task = new Task(req.body);
-    const data = task.save();
+    const data = await task.save();
 
     res.json({
       code: 200,
