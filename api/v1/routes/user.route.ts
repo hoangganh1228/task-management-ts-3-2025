@@ -22,5 +22,11 @@ router.get(
   authMiddleware.requireAuth,
   controller.detail,
 );
+
+router.get(
+  "/list", 
+  authMiddleware.requireAuth,
+  controller.list
+);
  
 export const userRoutes: Router = router;

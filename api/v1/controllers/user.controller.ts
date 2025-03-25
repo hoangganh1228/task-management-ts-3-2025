@@ -79,3 +79,16 @@ export const detail = async (req: Request, res: Response) => {
   });
 }
 
+// [GET] /api/v1/users/list/
+export const list = async(req: Request, res: Response) => {
+  const users = await User.find({
+    deleted: false
+  }).select("fullName email")
+
+  res.json({
+    code: 200,
+    message: "Thành công!",
+    users: users
+  });
+}
+
