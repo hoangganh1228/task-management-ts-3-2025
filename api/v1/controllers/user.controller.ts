@@ -44,8 +44,8 @@ export const login = async (req: Request, res: Response) => {
   });
 
   if(!existEmail) {
-    res.status(400).json({
-      code: 400,
+    res.status(404).json({
+      code: 404,
       message: "Email không tồn tại!"
     });
     return;
@@ -85,7 +85,7 @@ export const list = async(req: Request, res: Response) => {
     deleted: false
   }).select("fullName email")
 
-  res.json({
+  res.status(200).json({
     code: 200,
     message: "Thành công!",
     users: users
