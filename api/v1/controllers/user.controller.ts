@@ -7,88 +7,84 @@ import { generateRandomString } from "../helpers/generate";
 export const register = async (req: Request, res: Response) => {
   const emailExist = await User.findOne({
     email: req.body.email,
-    deleted: false
-  })
+    deleted: false,
+  });
 
-  if(emailExist) {
+  if (emailExist) {
     res.status(400).json({
       code: 400,
-      message: "Email đã tồn tại!"
-    })
+      message: "Email đã tồn tại!",
+    });
   } else {
     const newUser = {
       fullName: req.body.fullName,
       email: req.body.email,
       password: md5(req.body.password),
-      token: generateRandomString(30)
-    }
+      token: generateRandomString(30),
+    };
 
     const data = await User.create(newUser);
     const token = data.token;
 
-    res.json({
-      code: 200,
+    res.status(201).json({
+      code: 201,
       message: "Tạo tài khoản thành công!",
-      token: token
+      token: token,
     });
   }
-
-
-}
+};
 
 // [POST] /api/v1/users/login
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const existEmail = await User.findOne({
-    email: email
+    email: email,
   });
 
-  if(!existEmail) {
+  if (!existEmail) {
     res.status(404).json({
       code: 404,
-      message: "Email không tồn tại!"
+      message: "Email không tồn tại!",
     });
     return;
   }
 
-  if(md5(password) !== existEmail.password) {
+  if (md5(password) !== existEmail.password) {
     res.status(400).json({
       code: 400,
-      message: "Sai mật khẩu!"
+      message: "Sai mật khẩu!",
     });
     return;
   }
 
   const token = existEmail.token;
- 
-   // res.status(400).json();
+
+  // res.status(400).json();
   res.json({
     code: 200,
     message: "Đăng nhập thành công!",
-    token: token
+    token: token,
   });
-}
+};
 
 // [GET] /api/v1/users/detail/:id
 export const detail = async (req: Request, res: Response) => {
-  
   res.json({
     code: 200,
     message: "Thành công!",
-    info: req["infoUser"]
+    info: req["infoUser"],
   });
-}
+};
 
 // [GET] /api/v1/users/list/
-export const list = async(req: Request, res: Response) => {
+export const list = async (req: Request, res: Response) => {
   const users = await User.find({
-    deleted: false
-  }).select("fullName email")
+    deleted: false,
+  }).select("fullName email");
 
   res.status(200).json({
     code: 200,
     message: "Thành công!",
-    users: users
+    users: users,
   });
-}
-
+};

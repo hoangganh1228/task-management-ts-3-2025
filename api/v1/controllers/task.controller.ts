@@ -173,12 +173,31 @@ export const changeMulti = async (req: Request, res: Response) => {
 };
 
 export const createPost = async (req: Request, res: Response) => {
+  type typeStatus = "initial" | "doing" | "finish" | "pending" | "notFinish";
+
   try {
+    const status: typeStatus = req.body.status;
     req.body.createdBy = req["infoUser"].id;
+
+    const validateStatuses: typeStatus[] = [
+      "initial",
+      "doing",
+      "finish",
+      "pending",
+      "notFinish",
+    ];
+
+    if (!validateStatuses.includes(status as typeStatus)) {
+      return res.status(400).json({
+        code: 400,
+        message: "Trạng thái không hợp lệ!",
+      });
+    }
+
     const task = new Task(req.body);
     const data = await task.save();
 
-    res.json({
+    res.status(201).json({
       code: 200,
       message: "Tạo thành công!",
       data: data,
